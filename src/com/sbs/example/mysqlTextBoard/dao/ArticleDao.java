@@ -38,7 +38,7 @@ public class ArticleDao {
 //			sql += " SET updateDate = NOW()";
 //			sql += " WHERE id = 3";
 
-			String sql = "SELECT * FROM article";
+			String sql = "SELECT * FROM article ORDER BY id DESC";
 
 			try {
 				PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -47,26 +47,28 @@ public class ArticleDao {
 				
 				// select면 밑에
 				ResultSet rs = pstmt.executeQuery();
-				rs.next();
-				int id = rs.getInt("id");
-				String regDate = rs.getString("regDate");
-				String updateDate = rs.getString("updateDate");
-				String title = rs.getString("title");
-				String body = rs.getString("body");
-				String memberId = rs.getString("memberId");
-				String boardId = rs.getString("boardId");
+				
+				while (rs.next()) {
+					int id = rs.getInt("id");
+					String regDate = rs.getString("regDate");
+					String updateDate = rs.getString("updateDate");
+					String title = rs.getString("title");
+					String body = rs.getString("body");
+					String memberId = rs.getString("memberId");
+					String boardId = rs.getString("boardId");
 //				System.out.println("아이디 : " + id + "\n만든 시각  : " + regDate + "\n업데이트 된 시각 : " + updateDate + "\n타이틀 : " + title
 //						+ "\n내용 : " + body + "\n멤버 아이디 : " + memberId + "\n보드 아이디 : " + boardId);
-				Article article = new Article();
-				article.id = id;
-				article.regDate = regDate;
-				article.updateDate = updateDate;
-				article.title = title;
-				article.body = body;
-				article.memberId = memberId;
-				article.boardId = boardId;
-				
-				articles.add(article);
+					Article article = new Article();
+					article.id = id;
+					article.regDate = regDate;
+					article.updateDate = updateDate;
+					article.title = title;
+					article.body = body;
+					article.memberId = memberId;
+					article.boardId = boardId;
+					
+					articles.add(article);
+				}
 
 			} catch (SQLException e) {
 				e.printStackTrace();
