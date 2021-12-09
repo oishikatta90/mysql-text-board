@@ -11,25 +11,26 @@ import com.sbs.example.mysqlTextBoard.dto.Article;
 public class ArticleDao {
 
 	public List<Article> getArticles() {
-		List<Article> articles = new ArrayList<Article>();
-
-		String dbmsJdbcUrl = "jdbc:mysql://127.0.0.1:3306/textBoard?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
-		String dbmsLoginId = "sbsst";
-		String dbmsLoginPw = "1234";
-
-		// 기사 등록
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}
-
 		// 연결 생성
 		Connection conn = null;
+		List<Article> articles = new ArrayList<Article>();
 		try {
-			conn = DriverManager.getConnection(dbmsJdbcUrl, dbmsLoginId, dbmsLoginPw);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			String dbmsJdbcUrl = "jdbc:mysql://127.0.0.1:3306/textBoard?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000";
+			String dbmsLoginId = "sbsst";
+			String dbmsLoginPw = "1234";
+
+			// 기사 등록
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
+
+			try {
+				conn = DriverManager.getConnection(dbmsJdbcUrl, dbmsLoginId, dbmsLoginPw);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} finally {
 			try {
 				if (conn != null) {
