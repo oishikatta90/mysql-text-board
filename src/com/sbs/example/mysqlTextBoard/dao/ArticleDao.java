@@ -2,6 +2,7 @@ package com.sbs.example.mysqlTextBoard.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,20 @@ public class ArticleDao {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			
+			String sql = "UPDATE article";
+			sql += " SET updateDate = NOW()";
+			sql += " WHERE id = 3";
+			
+			try {
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				pstmt.execute();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+
+
 		} finally {
 			try {
 				if (conn != null) {
