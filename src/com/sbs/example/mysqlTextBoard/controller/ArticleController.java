@@ -13,10 +13,15 @@ public class ArticleController {
 	public ArticleController() {
 		articleService = new ArticleService();
 		}
-
-
-
-	public void showList() {
+	
+	public void doCommand(String cmd) {
+		if (cmd.startsWith("article list ")) {
+			showList(cmd);
+		} else if (cmd.startsWith("article detail")) {
+			showDetail(cmd);
+		}
+	}
+	private void showList(String cmd) {
 		System.out.println(" ==게시물 리스트== ");
 		
 		List<Article> articles = articleService.getArticles();
@@ -26,6 +31,24 @@ public class ArticleController {
 		for (Article article : articles) {
 			System.out.printf("%d / %s / %s / %s / %s \n",article.id, article.regDate, article.updateDate, article.memberId, article.title);
 		}
+	}
+
+	private void showDetail(String cmd) {
+		System.out.println(" ==게시물 상세 정보 ==");
+		int inputedId = Integer.parseInt(cmd.split(" ")[2]);
+		
+		Article article = articleService.getArticle(inputedId);
+		
+		if (article == null) {
+			System.out.println("존재하지는 게시물 번호입니다.");
+			return;
+		}
+		System.out.printf("번호 : %d\n", article.id);
+		System.out.printf("작성날짜 : %s\n", article.regDate);
+		System.out.printf("수정날짜 : %s\n", article.updateDate);
+		System.out.printf("타이틀 : %s\n", article.title);
+		System.out.printf("내용 : %s\n", article.body);
+		System.out.printf("작성자 : %s\n", article.memberId);
 	}
 
 }
