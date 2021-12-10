@@ -39,4 +39,23 @@ public class MemberDao {
 		}
 		return new Member(map);
 	}
+
+	public Member getMemberByLoginId(String loginId) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM `member`");
+		sql.append("WHERE loginId = ?", loginId);
+
+		Map<String, Object> map = MysqlUtil.selectRow(sql);
+
+		try {
+			if (map.isEmpty()) {
+				return null;
+			}
+		} catch (Exception e) {
+			System.out.println("해당 아이디는 없습니다.\n 프로그램을 종료합니다.");
+			System.exit(0);
+		}
+		return new Member(map);
+	}
 }

@@ -20,5 +20,11 @@ public class MemberService {
 		
 		return memberDao.getMemberById(memberId);
 	}
+	
+	//입력 받은 아이디랑 등록되어 있는 아이디를 비교해서 있으면 아이디를 가져온다.
+	public Member getMemberByLoginId(String loginId) {
+		
+		return memberDao.getMemberByLoginId(loginId);
+	}
 
 }

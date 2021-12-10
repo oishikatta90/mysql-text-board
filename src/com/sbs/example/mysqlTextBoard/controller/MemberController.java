@@ -3,9 +3,11 @@ package com.sbs.example.mysqlTextBoard.controller;
 import java.util.Scanner;
 
 import com.sbs.example.mysqlTextBoard.container.Container;
+import com.sbs.example.mysqlTextBoard.dto.Member;
 import com.sbs.example.mysqlTextBoard.service.MemberService;
+import com.sbs.example.mysqlTextBoard.session.Session;
 
-public class MemberController extends Controller{
+public class MemberController extends Controller {
 	MemberService memberService;
 
 	public MemberController() {
@@ -15,7 +17,47 @@ public class MemberController extends Controller{
 	public void doCommand(String cmd) {
 		if (cmd.startsWith("member join")) {
 			doJoin(cmd);
+		} else if (cmd.startsWith("member login")) {
+			doLogin(cmd);
+		}else if (cmd.startsWith("member login")) {
+			doLogin(cmd);
 		}
+	}
+
+	private void doLogin(String cmd) {
+		Scanner scan = Container.scanner;
+		System.out.println(" == 로그인 ==");
+
+		System.out.print("로그인 아이디 : ");
+		String loginId = scan.nextLine().trim();
+
+		if (loginId.length() == 0) {
+			System.out.println("로그인 아이디를 입력해주세요!");
+			return;
+		}
+		
+		Member member = memberService.getMemberByLoginId(loginId);
+		
+		if (member == null) {
+			System.out.println("존재하지 않는 회원입니다.");
+			return;
+		}
+		
+		System.out.print("비밀번호  : ");
+		String loginPw = scan.nextLine().trim();
+		if (loginPw.length() == 0) {
+			System.out.println("비밀번호를 입력해주세요!");
+			return;
+		}
+		
+		if (!member.loginPw.equals(loginPw)) {
+			System.out.println("비밀번호가 일치하지 않습니다.");
+			return;
+		}
+		
+		Session.loginedMemberId = member.id;
+
+		System.out.printf("%s 님 환영합니다.\n", member.name);
 	}
 
 	private void doJoin(String cmd) {
