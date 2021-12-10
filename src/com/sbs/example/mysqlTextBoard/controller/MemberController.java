@@ -9,7 +9,7 @@ public class MemberController {
 	MemberService memberService;
 
 	public MemberController() {
-		memberService = new MemberService();
+		memberService = Container.memberService;
 	}
 
 	public void doCommand(String cmd) {
