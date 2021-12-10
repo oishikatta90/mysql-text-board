@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -182,6 +183,66 @@ public class ArticleDao {
 			}
 		}
 		return affectedRows;
+	}
+
+	public int write(String title, String body, int memberId, int boardId) {
+		int id = 0;
+		// 연결 생성
+		Connection conn = null;
+		try {
+			String dbmsJdbcUrl = "jdbc:mysql://127.0.0.1:3306/textBoard?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000";
+			String dbmsLoginId = "sbsst";
+			String dbmsLoginPw = "1234";
+
+			// 기사 등록
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
+
+			try {
+				conn = DriverManager.getConnection(dbmsJdbcUrl, dbmsLoginId, dbmsLoginPw);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+//			String sql = "UPDATE article";
+//			sql += " SET updateDate = NOW()";
+//			sql += " WHERE id = 3";
+
+			String sql = "INSERT INTO article";
+			sql += " SET regDate = NOW()";
+			sql += ", updateDate = NOW()";
+			sql += ", title = ?";
+			sql += ", body = ?";
+			sql += ", memberId = ?";
+			sql += ", boardId = ?";
+
+			try {
+				PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				pstmt.setString(1, title);
+				pstmt.setString(2, body);
+				pstmt.setInt(3, memberId);
+				pstmt.setInt(4, boardId);
+				pstmt.executeUpdate();
+				
+				ResultSet rs = pstmt.getGeneratedKeys();
+				rs.next();
+				id = rs.getInt(1);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return id;
 	}
 
 }

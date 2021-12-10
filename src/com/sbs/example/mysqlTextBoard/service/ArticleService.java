@@ -26,4 +26,8 @@ public class ArticleService {
 		
 	}
 
+	public int write(String title, String body, int memberId, int boardId) {
+		return articleDao.write(title, body, memberId, boardId);
+	}
+
 }
