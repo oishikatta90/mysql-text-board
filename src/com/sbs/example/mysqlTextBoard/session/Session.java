@@ -2,6 +2,21 @@ package com.sbs.example.mysqlTextBoard.session;
 
 public class Session {
 
-	public static int loginedMemberId;
+	private  int loginedMemberId;
+	
+	public  void logOut() {
+		loginedMemberId = 0;
+	}
 
+	public  void logIn(int id) {
+		loginedMemberId = id;
+	}
+
+	public boolean isLogined() {
+		return loginedMemberId > 0;
+	}
+
+	public int getLoginedMemberId() {
+		return loginedMemberId;
+	}
 }

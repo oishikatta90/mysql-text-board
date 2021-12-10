@@ -9,6 +9,7 @@ import com.sbs.example.mysqlTextBoard.dao.ArticleDao;
 import com.sbs.example.mysqlTextBoard.dao.MemberDao;
 import com.sbs.example.mysqlTextBoard.service.ArticleService;
 import com.sbs.example.mysqlTextBoard.service.MemberService;
+import com.sbs.example.mysqlTextBoard.session.Session;
 
 public class Container {
 
@@ -19,9 +20,13 @@ public class Container {
 	public static ArticleDao articleDao;
 	public static Controller articleController;
 	public static Controller memberController;
+	public static Session session;
 	
 	static {
 		scanner = new Scanner(System.in);
+		
+		session = new Session();
+		
 		articleDao = new ArticleDao();
 		memberDao = new MemberDao();
 		

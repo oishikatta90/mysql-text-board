@@ -19,9 +19,37 @@ public class MemberController extends Controller {
 			doJoin(cmd);
 		} else if (cmd.startsWith("member login")) {
 			doLogin(cmd);
-		}else if (cmd.startsWith("member login")) {
-			doLogin(cmd);
+		} else if (cmd.startsWith("member logout")) {
+			doLogout(cmd);
+		} else if (cmd.startsWith("member whoami")) {
+			showWhoami(cmd);
 		}
+	}
+
+	private void showWhoami(String cmd) {
+		System.out.println(" == 회원확인 ==");
+
+		if (!Container.session.isLogined()) {
+			System.out.println("로그인 후 이용해주세요!");
+			return;
+		}
+
+		int loginedMemberId = Container.session.getLoginedMemberId();
+		Member member = memberService.getMemberById(loginedMemberId);
+		System.out.printf("번호 : %d", member.id);
+		System.out.printf("\n가입날 : %s", member.regDate);
+		System.out.printf("\n로그인 아이디 : %s", member.loginId);
+		System.out.printf("\n이름 : %s\n", member.name);
+	}
+
+	private void doLogout(String cmd) {
+		if (!Container.session.isLogined()) {
+			System.out.println("로그인 후 이용해주세요!");
+			return;
+		}
+		Container.session.logOut();
+		System.out.println("로그아웃 되었습니다.");
+
 	}
 
 	private void doLogin(String cmd) {
@@ -35,27 +63,27 @@ public class MemberController extends Controller {
 			System.out.println("로그인 아이디를 입력해주세요!");
 			return;
 		}
-		
+
 		Member member = memberService.getMemberByLoginId(loginId);
-		
+
 		if (member == null) {
 			System.out.println("존재하지 않는 회원입니다.");
 			return;
 		}
-		
+
 		System.out.print("비밀번호  : ");
 		String loginPw = scan.nextLine().trim();
 		if (loginPw.length() == 0) {
 			System.out.println("비밀번호를 입력해주세요!");
 			return;
 		}
-		
+
 		if (!member.loginPw.equals(loginPw)) {
 			System.out.println("비밀번호가 일치하지 않습니다.");
 			return;
 		}
-		
-		Session.loginedMemberId = member.id;
+
+		Container.session.logIn(member.id);
 
 		System.out.printf("%s 님 환영합니다.\n", member.name);
 	}
