@@ -5,7 +5,7 @@ import java.util.Scanner;
 import com.sbs.example.mysqlTextBoard.container.Container;
 import com.sbs.example.mysqlTextBoard.service.MemberService;
 
-public class MemberController {
+public class MemberController extends Controller{
 	MemberService memberService;
 
 	public MemberController() {
