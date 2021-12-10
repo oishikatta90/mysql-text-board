@@ -21,29 +21,56 @@ public class ArticleController {
 			showDetail(cmd);
 		} else if (cmd.startsWith("article delete")) {
 			doDelete(cmd);
-		}else if (cmd.startsWith("article write")) {
+		} else if (cmd.startsWith("article write")) {
 			doWrite(cmd);
+		} else if (cmd.startsWith("article modify")) {
+			doModify(cmd);
 		}
+	}
+
+	private void doModify(String cmd) {
+		System.out.println(" ==게시물 수정! ==");
+		int inputedId = Integer.parseInt(cmd.split(" ")[2]);
+
+		Article article = articleService.getArticle(inputedId);
+
+		if (article == null) {
+			System.out.println("존재하지는 게시물 번호입니다.");
+			return;
+		}
+		System.out.printf("번호 : %d\n", article.id);
+		System.out.printf("작성날짜 : %s\n", article.regDate);
+		System.out.printf("작성자 : %s\n", article.memberId);
+
+		Scanner scan = Container.scanner;
+
+		System.out.print("제목 : ");
+		String title = scan.nextLine();
+
+		System.out.print("내용 : ");
+		String body = scan.nextLine();
+
+		articleService.modify(inputedId, title, body);
+
+		System.out.printf("%d번 게시물을 수정하였습니다.\n", inputedId);
 	}
 
 	private void doWrite(String cmd) {
 		Scanner scan = Container.scanner;
 		System.out.println(" ==게시물 작성하기 ==");
-		
+
 		System.out.print("제목 : ");
 		String title = scan.nextLine();
-		
+
 		System.out.print("내용 : ");
 		String body = scan.nextLine();
-		
-		int memberId = 1; //임시로 1로 
+
+		int memberId = 1; // 임시로 1로
 		int boardId = 1;
-		
+
 		int id = articleService.write(title, body, memberId, boardId);
-		
+
 		System.out.printf("%d번 게시물을 생성하였습니다.\n", id);
-
-
 	}
 
 	private void doDelete(String cmd) {
@@ -57,7 +84,7 @@ public class ArticleController {
 			return;
 		}
 		articleService.delete(inputedId);
-		
+
 		System.out.printf("%d번 게시물을 삭제하였습니다.", inputedId);
 	}
 
@@ -66,11 +93,11 @@ public class ArticleController {
 
 		List<Article> articles = articleService.getArticles();
 
-		System.out.println("번호 / 작성 / 수정 / 작성자 / 제목 /");
+		System.out.println("번호 / 작성 / 수정 / 작성자 / 제목 / 내용");
 
 		for (Article article : articles) {
-			System.out.printf("%d / %s / %s / %s / %s \n", article.id, article.regDate, article.updateDate,
-					article.memberId, article.title);
+			System.out.printf("%d / %s / %s / %s / %s / %s\n", article.id, article.regDate, article.updateDate,
+					article.memberId, article.title, article.body);
 		}
 	}
 

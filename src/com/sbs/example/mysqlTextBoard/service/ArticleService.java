@@ -10,10 +10,10 @@ public class ArticleService {
 
 	public ArticleService() {
 		articleDao = new ArticleDao();
-		}
+	}
 
 	public List<Article> getArticles() {
-		
+
 		return articleDao.getArticles();
 	}
 
@@ -23,11 +23,15 @@ public class ArticleService {
 
 	public int delete(int inputedId) {
 		return articleDao.delete(inputedId);
-		
+
 	}
 
 	public int write(String title, String body, int memberId, int boardId) {
 		return articleDao.write(title, body, memberId, boardId);
+	}
+
+	public int modify(int inputedId, String title, String body) {
+		return articleDao.modify(inputedId, title, body);
 	}
 
 }
