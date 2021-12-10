@@ -47,9 +47,7 @@ public class ArticleDao {
 		} catch (Exception e) {
 			System.out.println("해당 게시물 번호는 없습니다.\n 프로그램을 종료합니다.");
 			System.exit(0);
-
 		}
-
 		return new Article(articleMap);
 	}
 
@@ -60,67 +58,18 @@ public class ArticleDao {
 		sql.append("WHERE id = ?", inputedId);
 
 		return MysqlUtil.delete(sql);
-
 	}
 
 	public int write(String title, String body, int memberId, int boardId) {
-		int id = 0;
-		// 연결 생성
-		Connection conn = null;
-		try {
-			String dbmsJdbcUrl = "jdbc:mysql://127.0.0.1:3306/textBoard?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000";
-			String dbmsLoginId = "sbsst";
-			String dbmsLoginPw = "1234";
-
-			// 기사 등록
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-
-			try {
-				conn = DriverManager.getConnection(dbmsJdbcUrl, dbmsLoginId, dbmsLoginPw);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-//			String sql = "UPDATE article";
-//			sql += " SET updateDate = NOW()";
-//			sql += " WHERE id = 3";
-
-			String sql = "INSERT INTO article";
-			sql += " SET regDate = NOW()";
-			sql += ", updateDate = NOW()";
-			sql += ", title = ?";
-			sql += ", body = ?";
-			sql += ", memberId = ?";
-			sql += ", boardId = ?";
-
-			try {
-				PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				pstmt.setString(1, title);
-				pstmt.setString(2, body);
-				pstmt.setInt(3, memberId);
-				pstmt.setInt(4, boardId);
-				pstmt.executeUpdate();
-
-				ResultSet rs = pstmt.getGeneratedKeys();
-				rs.next();
-				id = rs.getInt(1);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		} finally {
-			try {
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return id;
+			SecSql sql = new SecSql();			
+			sql.append("INSERT INTO article");
+			sql.append(" SET regDate = NOW()");
+			sql.append(", updateDate = NOW()");
+			sql.append(", title = ?", title);
+			sql.append(", body = ?", body);
+			sql.append(", memberId = ?", memberId);
+			sql.append(", boardId = ?", boardId);
+			
+			return MysqlUtil.insert(sql);
 	}
-
 }

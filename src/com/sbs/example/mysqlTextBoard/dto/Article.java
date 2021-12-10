@@ -11,22 +11,6 @@ public class Article {
 	public int memberId;
 	public int boardId;
 
-	public Article() {
-		super();
-	}
-
-	public Article(int id, String regDate, String updateDate, String title, String body, int memberId,
-			int boardId) {
-		super();
-		this.id = id;
-		this.regDate = regDate;
-		this.updateDate = updateDate;
-		this.title = title;
-		this.body = body;
-		this.memberId = memberId;
-		this.boardId = boardId;
-	}
-
 	public Article(Map<String, Object> articleMap) {
 		this.id = (int) articleMap.get("id");
 		this.regDate = (String) articleMap.get("regDate");
