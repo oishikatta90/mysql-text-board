@@ -33,61 +33,24 @@ public class ArticleDao {
 	}
 
 	public Article getArticle(int inputedId) {
-		// 연결 생성
-		Connection conn = null;
-		Article article = null;
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM article");
+		sql.append("WHERE id = ?", inputedId);
+		
+		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
+		
 		try {
-			String dbmsJdbcUrl = "jdbc:mysql://127.0.0.1:3306/textBoard?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000";
-			String dbmsLoginId = "sbsst";
-			String dbmsLoginPw = "1234";
-
-			// 기사 등록
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-
-			try {
-				conn = DriverManager.getConnection(dbmsJdbcUrl, dbmsLoginId, dbmsLoginPw);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-//			String sql = "UPDATE article";
-//			sql += " SET updateDate = NOW()";
-//			sql += " WHERE id = 3";
-
-			String sql = "SELECT * FROM article WHERE id = ?";
-
-			try {
-				PreparedStatement pstmt = conn.prepareStatement(sql);
-				pstmt.setInt(1, inputedId);
-				ResultSet rs = pstmt.executeQuery();
-
-				if (rs.next()) {
-					int id = rs.getInt("id");
-					String regDate = rs.getString("regDate");
-					String updateDate = rs.getString("updateDate");
-					String title = rs.getString("title");
-					String body = rs.getString("body");
-					int memberId = rs.getInt("memberId");
-					int boardId = rs.getInt("boardId");
-					article = new Article(id, regDate, updateDate, title, body, memberId, boardId);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		} finally {
-			try {
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		if (articleMap.isEmpty()) {
+			return null;
 		}
-		return article;
+		}catch(Exception e) {
+			System.out.println("해당 게시물 번호는 없습니다.\n 프로그램을 종료합니다.");
+			System.exit(0);
+		
+		}
+		
+		return new Article(articleMap);
 	}
 
 	public int delete(int inputedId) {
