@@ -5,6 +5,7 @@ import java.util.List;
 import com.sbs.example.mysqlTextBoard.container.Container;
 import com.sbs.example.mysqlTextBoard.dao.ArticleDao;
 import com.sbs.example.mysqlTextBoard.dto.Article;
+import com.sbs.example.mysqlTextBoard.dto.Board;
 
 public class ArticleService {
 	private ArticleDao articleDao;
@@ -36,8 +37,12 @@ public class ArticleService {
 	}
 	
 	//출력용 데이터를 전달하기 위한 메소드
-	public List<Article> getForPrintArticles() {
-		return articleDao.getForPrintArticles();
+	public List<Article> getForPrintArticles(int boardId) {
+		return articleDao.getForPrintArticles(boardId);
+	}
+
+	public Board getBoardByCode(String boardCode) {
+		return articleDao.getBoardByCode(boardCode);
 	}
 
 }
