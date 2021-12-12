@@ -17,6 +17,7 @@ public class App {
 			String cmd = scan.nextLine();
 			
 			MysqlUtil.setDBInfo("localhost", "sbsst", "1234", "textboard");
+			MysqlUtil.setDevMode(false);
 			
 			boolean needToExit = false;
 			

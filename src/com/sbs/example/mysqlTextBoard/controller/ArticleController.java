@@ -9,7 +9,7 @@ import com.sbs.example.mysqlTextBoard.dto.Member;
 import com.sbs.example.mysqlTextBoard.service.ArticleService;
 import com.sbs.example.mysqlTextBoard.service.MemberService;
 
-public class ArticleController extends Controller{
+public class ArticleController extends Controller {
 	private ArticleService articleService;
 	private MemberService memberService;
 
@@ -42,10 +42,10 @@ public class ArticleController extends Controller{
 			System.out.println("존재하지는 게시물 번호입니다.");
 			return;
 		}
-		
+
 		Member member = memberService.getMemberById(article.memberId);
 		String writer = member.name;
-		
+
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("작성날짜 : %s\n", article.regDate);
 		System.out.printf("작성자 : %s\n", writer);
@@ -99,15 +99,14 @@ public class ArticleController extends Controller{
 	private void showList(String cmd) {
 		System.out.println(" ==게시물 리스트== ");
 
-		List<Article> articles = articleService.getArticles();
+		List<Article> articles = articleService.getForPrintArticles();
 
 		System.out.println("번호 / 작성 / 수정 / 작성자 / 제목 / 내용");
 
 		for (Article article : articles) {
-			Member member = memberService.getMemberById(article.memberId);
-			String writer = member.name;
-					System.out.printf("%d / %s / %s / %s / %s / %s\n", article.id, article.regDate, article.updateDate,
-							writer, article.title, article.body);		
+			String writer = article.extra__writer;
+			System.out.printf("%d / %s / %s / %s / %s / %s\n", article.id, article.regDate, article.updateDate, writer,
+					article.title, article.body);
 		}
 	}
 
@@ -121,10 +120,10 @@ public class ArticleController extends Controller{
 			System.out.println("존재하지는 게시물 번호입니다.");
 			return;
 		}
-		
+
 		Member member = memberService.getMemberById(article.memberId);
 		String writer = member.name;
-		
+
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("작성날짜 : %s\n", article.regDate);
 		System.out.printf("수정날짜 : %s\n", article.updateDate);

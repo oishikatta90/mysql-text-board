@@ -34,5 +34,10 @@ public class ArticleService {
 	public int modify(int inputedId, String title, String body) {
 		return articleDao.modify(inputedId, title, body);
 	}
+	
+	//출력용 데이터를 전달하기 위한 메소드
+	public List<Article> getForPrintArticles() {
+		return articleDao.getForPrintArticles();
+	}
 
 }
