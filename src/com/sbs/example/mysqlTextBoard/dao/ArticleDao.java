@@ -62,26 +62,26 @@ public class ArticleDao {
 	}
 
 	public int write(String title, String body, int memberId, int boardId) {
-			SecSql sql = new SecSql();			
-			sql.append("INSERT INTO article");
-			sql.append(" SET regDate = NOW()");
-			sql.append(", updateDate = NOW()");
-			sql.append(", title = ?", title);
-			sql.append(", body = ?", body);
-			sql.append(", memberId = ?", memberId);
-			sql.append(", boardId = ?", boardId);
-			
-			return MysqlUtil.insert(sql);
+		SecSql sql = new SecSql();
+		sql.append("INSERT INTO article");
+		sql.append(" SET regDate = NOW()");
+		sql.append(", updateDate = NOW()");
+		sql.append(", title = ?", title);
+		sql.append(", body = ?", body);
+		sql.append(", memberId = ?", memberId);
+		sql.append(", boardId = ?", boardId);
+
+		return MysqlUtil.insert(sql);
 	}
 
 	public int modify(int inputedId, String title, String body) {
-		SecSql sql = new SecSql();	
+		SecSql sql = new SecSql();
 		sql.append("UPDATE article");
 		sql.append(" SET updateDate = NOW()");
 		sql.append(", title = ?", title);
 		sql.append(", body = ?", body);
-		sql.append("WHERE id =?",inputedId);
-		
+		sql.append("WHERE id =?", inputedId);
+
 		return MysqlUtil.update(sql);
 	}
 
@@ -104,7 +104,7 @@ public class ArticleDao {
 			articles.add(new Article(articleMap));
 		}
 		return articles;
-}
+	}
 
 	public Board getBoardByCode(String boardCode) {
 		SecSql sql = new SecSql();
@@ -114,8 +114,8 @@ public class ArticleDao {
 
 		Map<String, Object> map = MysqlUtil.selectRow(sql);
 
-			if (map == null) {
-				return null;
+		if (map == null) {
+			return null;
 		}
 		return new Board(map);
 	}
@@ -127,6 +127,7 @@ public class ArticleDao {
 		sql.append("WHERE `name` = ?", name);
 
 		Map<String, Object> map = MysqlUtil.selectRow(sql);
+		
 		if (map == null) {
 			return null;
 		}
@@ -134,13 +135,38 @@ public class ArticleDao {
 	}
 
 	public int makeBoard(String name, String code) {
-		SecSql sql = new SecSql();			
+		SecSql sql = new SecSql();
 		sql.append("INSERT INTO board");
 		sql.append(" SET regDate = NOW()");
 		sql.append(", updateDate = NOW()");
 		sql.append(", `name` = ?", name);
 		sql.append(", `code` = ?", code);
-		
+
 		return MysqlUtil.insert(sql);
+	}
+
+	public List<Board> getForPrintBoards() {
+		List<Board> boards = new ArrayList<Board>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT B.*");
+		sql.append("FROM board AS B");
+		sql.append("ORDER BY B.id DESC");
+
+		List<Map<String, Object>> mapList = MysqlUtil.selectRows(sql);
+
+		for (Map<String, Object> map : mapList) {
+			boards.add(new Board(map));
+		}
+		return boards;
+	}
+
+	public int getArticlesCount(int boardId) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT COUNT(*) AS cnt");
+		sql.append("FROM article");
+		sql.append("WHERE boardId = ?", boardId);
+
+		return MysqlUtil.selectRowIntValue(sql);
 	}
 }

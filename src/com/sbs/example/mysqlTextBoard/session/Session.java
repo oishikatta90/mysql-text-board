@@ -29,4 +29,9 @@ public class Session {
 	public String getCurrentBoardCode() {
 		return currentBoardCode;
 	}
+
+	public void setCurrentBoardCode(String currentBoardCode) {
+		this.currentBoardCode = currentBoardCode;
+	}
+	
 }

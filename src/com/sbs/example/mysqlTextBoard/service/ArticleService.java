@@ -59,4 +59,12 @@ public class ArticleService {
 		return articleDao.makeBoard(name, code);
 	}
 
+	public List<Board> getForPrintBoards() {
+		return articleDao.getForPrintBoards();
+	}
+
+	public int getArticlesCount(int boardId) {
+		return articleDao.getArticlesCount(boardId);
+	}
+
 }
