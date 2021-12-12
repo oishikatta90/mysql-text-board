@@ -34,6 +34,10 @@ public class ArticleController extends Controller {
 
 	private void doModify(String cmd) {
 		System.out.println(" ==게시물 수정! ==");
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
 		int inputedId = Integer.parseInt(cmd.split(" ")[2]);
 
 		Article article = articleService.getArticle(inputedId);
@@ -67,13 +71,18 @@ public class ArticleController extends Controller {
 		Scanner scan = Container.scanner;
 		System.out.println(" ==게시물 작성하기 ==");
 
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+
 		System.out.print("제목 : ");
 		String title = scan.nextLine();
 
 		System.out.print("내용 : ");
 		String body = scan.nextLine();
 
-		int memberId = 1; // 임시로 1로
+		int memberId = Container.session.getLoginedMemberId();
 		int boardId = 1;
 
 		int id = articleService.write(title, body, memberId, boardId);
@@ -83,6 +92,11 @@ public class ArticleController extends Controller {
 
 	private void doDelete(String cmd) {
 		System.out.println(" ==게시물 삭제하기 ==");
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+
 		int inputedId = Integer.parseInt(cmd.split(" ")[2]);
 
 		Article article = articleService.getArticle(inputedId);
