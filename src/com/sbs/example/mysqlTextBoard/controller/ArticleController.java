@@ -41,11 +41,16 @@ public class ArticleController extends Controller {
 		int inputedId = Integer.parseInt(cmd.split(" ")[2]);
 
 		Article article = articleService.getArticle(inputedId);
-
 		if (article == null) {
 			System.out.println("존재하지는 게시물 번호입니다.");
 			return;
 		}
+		
+		if (article.memberId != Container.session.getLoginedMemberId()) {
+			System.out.println("수정 할 권한이 없습니다.");
+			return;
+		}
+
 
 		Member member = memberService.getMemberById(article.memberId);
 		String writer = member.name;
@@ -103,6 +108,11 @@ public class ArticleController extends Controller {
 
 		if (article == null) {
 			System.out.println("존재하지는 게시물 번호입니다.");
+			return;
+		}
+		
+		if (article.memberId != Container.session.getLoginedMemberId()) {
+			System.out.println("삭제 할 권한이 없습니다.");
 			return;
 		}
 		articleService.delete(inputedId);
