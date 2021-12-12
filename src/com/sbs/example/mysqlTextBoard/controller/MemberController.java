@@ -53,6 +53,10 @@ public class MemberController extends Controller {
 	}
 
 	private void doLogin(String cmd) {
+		if (Container.session.isLogined()) {
+			System.out.println("로그아웃 후 이용해 주세요.");
+			return;
+		}
 		Scanner scan = Container.scanner;
 		System.out.println(" == 로그인 ==");
 
@@ -89,6 +93,10 @@ public class MemberController extends Controller {
 	}
 
 	private void doJoin(String cmd) {
+		if (Container.session.isLogined()) {
+			System.out.println("로그아웃 후 이용해 주세요.");
+			return;
+		}
 		Scanner scan = Container.scanner;
 		System.out.println(" ==회원가입! ==");
 
