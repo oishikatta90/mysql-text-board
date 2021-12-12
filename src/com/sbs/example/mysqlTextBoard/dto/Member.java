@@ -18,4 +18,12 @@ public class Member {
 		this.loginPw = (String) map.get("loginPw");
 		this.name = (String) map.get("name");
 	}
+
+	public String getType() {
+		return isAdmin() ? "관리자" : "일반회원";
+	}
+
+	public boolean isAdmin() {
+		return loginId.equals("test1");
+	}
 }

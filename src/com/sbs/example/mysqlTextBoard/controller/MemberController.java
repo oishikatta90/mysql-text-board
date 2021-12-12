@@ -40,6 +40,7 @@ public class MemberController extends Controller {
 		System.out.printf("\n가입날 : %s", member.regDate);
 		System.out.printf("\n로그인 아이디 : %s", member.loginId);
 		System.out.printf("\n이름 : %s\n", member.name);
+		System.out.printf("회원종류 : %s\n", member.getType());
 	}
 
 	private void doLogout(String cmd) {

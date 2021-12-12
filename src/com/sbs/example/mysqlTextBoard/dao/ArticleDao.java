@@ -114,14 +114,33 @@ public class ArticleDao {
 
 		Map<String, Object> map = MysqlUtil.selectRow(sql);
 
-		try {
-			if (map.isEmpty()) {
+			if (map == null) {
 				return null;
-			}
-		} catch (Exception e) {
-			System.out.println("해당 게시물 번호는 없습니다.\n 프로그램을 종료합니다.");
-			System.exit(0);
 		}
 		return new Board(map);
+	}
+
+	public Board getBoardByName(String name) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM board");
+		sql.append("WHERE `name` = ?", name);
+
+		Map<String, Object> map = MysqlUtil.selectRow(sql);
+		if (map == null) {
+			return null;
+		}
+		return new Board(map);
+	}
+
+	public int makeBoard(String name, String code) {
+		SecSql sql = new SecSql();			
+		sql.append("INSERT INTO board");
+		sql.append(" SET regDate = NOW()");
+		sql.append(", updateDate = NOW()");
+		sql.append(", `name` = ?", name);
+		sql.append(", `code` = ?", code);
+		
+		return MysqlUtil.insert(sql);
 	}
 }

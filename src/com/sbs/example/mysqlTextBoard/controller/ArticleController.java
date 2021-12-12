@@ -20,7 +20,9 @@ public class ArticleController extends Controller {
 	}
 
 	public void doCommand(String cmd) {
-		if (cmd.startsWith("article list")) {
+		if (cmd.startsWith("article makeBoard")) {
+			doMakeBoard(cmd);
+		} else if (cmd.startsWith("article list")) {
 			showList(cmd);
 		} else if (cmd.startsWith("article detail")) {
 			showDetail(cmd);
@@ -31,6 +33,43 @@ public class ArticleController extends Controller {
 		} else if (cmd.startsWith("article modify")) {
 			doModify(cmd);
 		}
+	}
+
+	private void doMakeBoard(String cmd) {
+		Scanner scan = Container.scanner;
+		System.out.println(" ==게시판 작성하기 ==");
+
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+		Member member = memberService.getMemberById(Container.session.getLoginedMemberId());
+		
+		if (member.isAdmin() == false) {
+			System.out.println("관리자만 게시판을 생성 가능합니다.");
+			return;
+		}
+		
+		System.out.print("제목 : ");
+		String name = scan.nextLine();
+		
+		if (articleService.isMakeBoardAvailableName(name) == false) {
+			System.out.println("해당 이름은 이미 사용중입니다.");
+			return;
+		}
+
+		System.out.print("코드 : ");
+		String code = scan.nextLine();
+		
+		if (articleService.isMakeBoardAvailableCode(code) == false) {
+			System.out.println("해당 코드는 이미 사용중입니다.");
+			return;
+		}
+
+		int id = articleService.makeBoard(name, code);
+
+		System.out.printf("%d번 게시판을 생성하였습니다.\n", id);
+		
 	}
 
 	private void doModify(String cmd) {
@@ -46,12 +85,11 @@ public class ArticleController extends Controller {
 			System.out.println("존재하지는 게시물 번호입니다.");
 			return;
 		}
-		
+
 		if (article.memberId != Container.session.getLoginedMemberId()) {
 			System.out.println("수정 할 권한이 없습니다.");
 			return;
 		}
-
 
 		Member member = memberService.getMemberById(article.memberId);
 		String writer = member.name;
@@ -111,7 +149,7 @@ public class ArticleController extends Controller {
 			System.out.println("존재하지는 게시물 번호입니다.");
 			return;
 		}
-		
+
 		if (article.memberId != Container.session.getLoginedMemberId()) {
 			System.out.println("삭제 할 권한이 없습니다.");
 			return;
