@@ -22,6 +22,8 @@ public class BuildService {
 		System.out.println("site/article 폴더 생성");
 		Util.mkdirs("site");
 		
+		Util.copy("site_template/app.css", "site/app.css");
+		
 		List<Article> articles = articleService.getArticles();
 		
 		String head = Util.getFileContents("site_template/head.html");
