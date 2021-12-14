@@ -67,4 +67,5 @@ public class ArticleService {
 		return articleDao.getArticlesCount(boardId);
 	}
 
+
 }

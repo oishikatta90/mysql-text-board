@@ -169,4 +169,5 @@ public class ArticleDao {
 
 		return MysqlUtil.selectRowIntValue(sql);
 	}
+
 }
